@@ -18,7 +18,7 @@ const Layout = () => {
 
   const fetchIds = async () => {
     try {
-      const response = await axios.get('https://resizable-layout.onrender.com/api/component/');
+      const response = await axios.get('http://localhost:3000/api/component/');
       // Map both uuid and name from the response data
       const componentData = response.data.component.map(comp => ({
         uuid: comp.uuid,
