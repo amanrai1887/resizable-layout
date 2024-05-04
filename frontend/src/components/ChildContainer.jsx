@@ -3,6 +3,8 @@ import { Button } from '@mui/material';
 import axios from 'axios';
 import './Layout.css';
 
+const API_URL = 'https://resizable-layout.onrender.com/api/component';
+
 const ChildContainer = ({ id, name }) => {
   const [inputValue, setInputValue] = useState('');
   const [showInput, setShowInput] = useState(false);
@@ -16,24 +18,22 @@ const ChildContainer = ({ id, name }) => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:3000/api/component/${id}`
-      );
+      const response = await axios.get(`${API_URL}/${id}`);
       const data = response.data.component?.component_has_data[0]?.data;
-      updateDOM(data, response.data.component.count);
       setExistingData(data);
+      updateDOM(data, response.data.component.count);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   };
 
-  const handleAdd = async () => {
+  const handleAdd = () => {
     setInputValue('');
     setShowInput(true);
     updateDOM('', apiCount);
   };
 
-  const handleUpdate = async () => {
+  const handleUpdate = () => {
     setInputValue(existingData);
     setShowInput(true);
   };
@@ -41,17 +41,11 @@ const ChildContainer = ({ id, name }) => {
   const handleSubmit = async () => {
     try {
       if (inputValue.trim() !== '') {
-        if (showInput) {
-          await axios.post(`http://localhost:3000/api/component/add`, {
-            data: inputValue,
-            uuid: id,
-          });
-        } else {
-          await axios.put(`http://localhost:3000/api/component/update`, {
-            data: inputValue,
-            uuid: id,
-          });
-        }
+        const endpoint = showInput ? 'add' : 'update';
+        await axios[showInput ? 'post' : 'put'](`${API_URL}/${endpoint}`, {
+          data: inputValue,
+          uuid: id,
+        });
         fetchData();
         setInputValue('');
         setShowInput(false);
@@ -62,18 +56,19 @@ const ChildContainer = ({ id, name }) => {
       }
     } catch (error) {
       console.error('Error:', error);
+      setError('Something went wrong. Please try again.');
     }
   };
 
   const updateDOM = (data, count) => {
-    document.getElementById('data-' + id).innerText = data;
-    document.getElementById('count-' + id).innerText = 'API Calls: ' + count;
+    setExistingData(data);
+    setApiCount(count);
   };
 
   return (
     <div className={`child ${name}`}>
       <div className='data-container'>
-        <h3 id={'data-' + id}></h3>
+        <h3>{existingData}</h3>
       </div>
       <div className='input-container'>
         {showInput && (
@@ -102,7 +97,7 @@ const ChildContainer = ({ id, name }) => {
         )}
       </div>
       <div className='count-container'>
-        <h4 id={'count-' + id}>API Calls: {apiCount}</h4>
+        <h4>API Calls: {apiCount}</h4>
       </div>
     </div>
   );
