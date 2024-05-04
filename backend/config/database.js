@@ -1,12 +1,13 @@
 // config/database.js
 const { Sequelize } = require('sequelize');
+console.log(process.env.MYSQL_HOST)
 
 const sequelize = new Sequelize({
   dialect: 'mysql',
-  host: 'sql6.freesqldatabase.com',
-  username: 'sql6703840',
-  password: 'Vy3LaFEeCr',
-  database: 'sql6703840',
+  host: process.env.MYSQL_HOST,
+  username: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PASSWORD,
+  database: process.env.MYSQL_DATABASE,
 });
 
 module.exports = sequelize;
