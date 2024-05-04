@@ -1,14 +1,14 @@
-
-import './App.css'
-import Layout from './components/Layout'
+// App.js
+import React from 'react';
+import './App.css';
+import Layout from './components/Layout';
 
 function App() {
-
   return (
     <>
-    <Layout />
+      <Layout />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
