@@ -8,7 +8,7 @@ I'm pleased to inform you that I have successfully completed the tasks within th
 
 To get started with the frontend setup, follow these steps:
 
-1. **Clone the repository** using the following URL: `https://github.com/amanrai1887/landing-website.git`.
+1. **Clone the repository** using the following URL: `https://github.com/amanrai1887/resizable-layout.git`.
 
 2. **Change directory** to `frontend`.
 
@@ -18,7 +18,7 @@ To get started with the frontend setup, follow these steps:
 
 5. **Verify the website's functionality** by accessing it in the browser at [http://localhost:3000](http://localhost:3000).
 
-6.  **Hosted URL**: Run ``.
+6.  **Hosted URL**:  `https://resizable-layout-ten.vercel.app/`.
 
 ## Task 2: Backend Setup
 
@@ -33,6 +33,10 @@ For setting up the backend, proceed with the following instructions:
 4. **Run migrations**: Run `npx sequelize-cli db:migrate`.
 
 5. **Start the server**: Run `npm start`.
+
+6. **Hosted URL**: Run `https://resizable-layout.onrender.com/`.
+
+7.  **Swagger API Docs**: Run `https://resizable-layout.onrender.com/api-docs/`.
 
 
 ## Technologies Used
