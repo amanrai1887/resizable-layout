@@ -1,15 +1,33 @@
 // controllers/userController.js
 
+// Import models
 const models = require('../models');
 
+/**
+ * Add data to a component.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {Object} - JSON object containing the added component data.
+ */
 module.exports.add = async (req, res) => {
     try {
         const { uuid, data } = req.body;
+
+        if (!uuid) {
+            return res.status(412).json({ message: 'Please send valid id of component' });
+        }
+        if (!data) {
+            return res.status(412).json({ message: 'Please send valid data' });
+        }
         const component = await models.component.findOne({
             where: {
                 uuid: uuid
             }
         });
+
+        if (!component) {
+            return res.status(412).json({ message: 'Please send valid component' });
+        }
 
         const componentData = await models.component_has_data.findOne({
             where: {
@@ -37,14 +55,31 @@ module.exports.add = async (req, res) => {
     }
 };
 
+/**
+ * Update data of a component.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {Object} - JSON object containing the updated component data.
+ */
 module.exports.update = async (req, res) => {
     try {
         const { uuid, data } = req.body;
+
+        if (!uuid) {
+            return res.status(412).json({ message: 'Please send valid id of component' });
+        }
+        if (!data) {
+            return res.status(412).json({ message: 'Please send valid data' });
+        }
         const component = await models.component.findOne({
             where: {
                 uuid: uuid
             }
         });
+
+        if (!component) {
+            return res.status(412).json({ message: 'Please send valid component' });
+        }
 
         const componentData = await models.component_has_data.findOne({
             where: {
@@ -52,8 +87,11 @@ module.exports.update = async (req, res) => {
             }
         });
 
-        componentData.data = data;
-        await componentData.save();
+        if (componentData.data !== data) {
+
+            componentData.data = data;
+            await componentData.save();
+        }
         component.count = component.count + 1;
         await component.save();
 
@@ -64,14 +102,18 @@ module.exports.update = async (req, res) => {
     }
 };
 
+/**
+ * Get all components with their associated data.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {Object} - JSON object containing all components with their associated data.
+ */
 module.exports.getComponents = async (req, res) => {
     try {
-
         const component = await models.component.findAll({
             include: [{
                 model: models.component_has_data,
                 as: 'component_has_data',
-                // attributes: ['name'],
             }]
         });
 
@@ -82,6 +124,12 @@ module.exports.getComponents = async (req, res) => {
     }
 };
 
+/**
+ * Get a component by its UUID with its associated data.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {Object} - JSON object containing the component with its associated data.
+ */
 module.exports.getComponentById = async (req, res) => {
     try {
         const { uuid } = req.params;
@@ -92,7 +140,6 @@ module.exports.getComponentById = async (req, res) => {
             include: [{
                 model: models.component_has_data,
                 as: 'component_has_data',
-                // attributes: ['name'],
             }]
         });
 
