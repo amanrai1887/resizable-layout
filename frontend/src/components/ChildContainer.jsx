@@ -12,7 +12,7 @@ const ChildContainer = ({ id, name }) => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/component/${id}`
+        `https://resizable-layout.onrender.com/api/component/${id}`
       );
       updateDOM(response.data.component?.component_has_data[0]?.data, response.data.component.count);
     } catch (error) {
@@ -22,7 +22,7 @@ const ChildContainer = ({ id, name }) => {
 
   const handleAdd = async () => {
     try {
-      await axios.post(`http://localhost:3000/api/component/add`, {
+      await axios.post(`https://resizable-layout.onrender.com/api/component/add`, {
         data: document.getElementById('textarea-' + id).value,
         uuid: id,
       });
@@ -35,7 +35,7 @@ const ChildContainer = ({ id, name }) => {
 
   const handleUpdate = async () => {
     try {
-      await axios.put(`http://localhost:3000/api/component/update`, {
+      await axios.put(`https://resizable-layout.onrender.com/api/component/update`, {
         data: document.getElementById('textarea-' + id).value,
         uuid: id,
       });
